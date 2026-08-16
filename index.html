@@ -26,8 +26,9 @@
 
   /* preloader */
   #preloader{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2.2rem;
-    animation:plhide 2.8s ease 1.9s forwards}
+    animation:plhide .9s ease .55s forwards}
   @keyframes plhide{to{opacity:0;visibility:hidden;pointer-events:none}}
+  html.nopre #preloader{display:none!important}
   #preloader .pl-name{font-family:var(--serif);font-size:clamp(3rem,9vw,6.5rem);letter-spacing:.28em;text-indent:.28em;color:var(--cream);font-weight:300}
   #preloader .pl-sub{font-size:.68rem;letter-spacing:.5em;text-indent:.5em;color:var(--dim);text-transform:uppercase}
   #preloader .pl-count{position:absolute;bottom:2.2rem;right:2.6rem;font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--gold)}
@@ -144,6 +145,7 @@
 </style>
 </head>
 <body>
+<script>if(location.search.indexOf('nopre')>-1){document.documentElement.classList.add('nopre');}</script>
 
 <div id="preloader">
   <div class="pl-name">AETHER</div>
@@ -306,11 +308,11 @@ swatches.forEach(function(s,i){ s.addEventListener('click', function(){ selectFr
 var qp = new URLSearchParams(location.search).get('frag');
 if(qp!==null && FRAGS[qp]) selectFrag(+qp);
 var qs = new URLSearchParams(location.search).get('sec');
+var qpos = new URLSearchParams(location.search).get('pos');
+if(qpos){ var go2 = function(){ document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, parseInt(qpos,10)); }; if(location.search.indexOf('nopre')>-1){ go2(); } else { setTimeout(go2, 4500); } }
 if(qs){
   var go = function(){ var el = document.getElementById(qs); if(el){ document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, el.offsetTop); el.classList.add('in'); } };
-  if(location.search.indexOf('nopre') > -1){
-    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(go); } else { go(); }
-  } else { setTimeout(go, 4500); }
+  if(location.search.indexOf('nopre') > -1){ go(); } else { setTimeout(go, 4500); }
 }
 
 /* cursor + magnet */
