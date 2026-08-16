@@ -51,10 +51,11 @@
 
   /* hero */
   #hero{pointer-events:none;overflow:hidden}
-  .hero-photo{position:absolute;inset:0;z-index:-1}
-  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:70% 50%;filter:contrast(1.05) saturate(1.05);clip-path:inset(0 0 100% 0)}
+  .hero-photo{position:absolute;inset:0;z-index:0}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:70% 50%;opacity:0;transform:scale(1.09);transition:opacity 1.6s cubic-bezier(.16,1,.3,1),transform 2.2s cubic-bezier(.16,1,.3,1)}
+  .hero-photo img.on{opacity:1;transform:scale(1.02)}
   .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,6,10,.94) 12%,rgba(7,6,10,.55) 42%,rgba(7,6,10,.12) 68%),linear-gradient(to top,rgba(7,6,10,.9) 0%,transparent 30%)}
-  #hero .inner{position:relative;max-width:44rem}
+  #hero .inner{position:relative;z-index:2;max-width:44rem}
   #hero h1{font-size:clamp(4.6rem,14vw,11.5rem);letter-spacing:.06em;color:var(--cream)}
   #hero h1 .gold{background:linear-gradient(120deg,#8a6d1f,var(--gold-hi) 45%,#8a6d1f 80%);-webkit-background-clip:text;background-clip:text;color:transparent}
   #hero .sub{max-width:34ch;font-size:clamp(.95rem,1.4vw,1.15rem);color:var(--dim);margin-top:1.6rem;line-height:1.75}
@@ -327,8 +328,7 @@ const state = {swirl:0};
 function setMode(m){ pMode = m; }
 
 /* ============ scroll: parallax foto hero + surgimiento en craft ============ */
-gsap.to('.hero-photo img', {
-  yPercent:14, scale:1.12, ease:'none',
+gsap.to('.hero-photo', {yPercent:14, ease:'none',
   scrollTrigger:{trigger:'#hero', start:'top top', end:'bottom top', scrub:1}
 });
 gsap.to('#hero .inner', {
@@ -436,8 +436,8 @@ document.querySelector('#hero .scroll-hint').style.opacity=0;
 let started = false;
 function onReady(){
   if(started) return; started = true;
-  // revelar foto hero con cortina + particulas apareciendo
-  gsap.to('.hero-photo img', {clipPath:'inset(0 0 0% 0)', duration:1.6, ease:'power4.inOut'});
+  // revelar foto hero (opacidad + escala lenta) + particulas apareciendo
+  document.querySelector('.hero-photo img').classList.add('on');
   gsap.to(pMat, {opacity:0.12, duration:1.4, delay:0.6});
   document.querySelector('#hero h1').classList.add('in');
   gsap.to('#hero .label, #hero .sub, #hero .ctas, #hero .scroll-hint', {opacity:1, y:0, duration:0.9, delay:1.2, stagger:0.12, ease:'power3.out'});
