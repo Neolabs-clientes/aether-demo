@@ -231,6 +231,35 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* preloader independiente: no depende de WebGL ni de gsap. Si el 3D falla, la web sigue visible. */
+(function(){
+  var count = 0, el = document.querySelector('.pl-count'), bar = document.querySelector('.pl-line i');
+  var iv = setInterval(function(){
+    count += 1 + Math.floor(Math.random()*7);
+    if(count >= 100){ count = 100; clearInterval(iv); }
+    el.textContent = count;
+    if(bar) bar.style.transform = 'scaleX(' + (count/100) + ')';
+    if(count === 100) setTimeout(finish, 250);
+  }, 60);
+  function finish(){
+    var pl = document.getElementById('preloader');
+    var name = document.querySelector('.pl-name'), sub = document.querySelector('.pl-sub');
+    if(name){ name.style.transition = 'transform .6s, opacity .6s'; name.style.transform = 'translateY(-26px)'; name.style.opacity = 0; }
+    if(sub){ sub.style.transition = 'transform .6s, opacity .6s'; sub.style.transform = 'translateY(-26px)'; sub.style.opacity = 0; }
+    if(el){ el.style.transition = 'opacity .4s'; el.style.opacity = 0; }
+    if(pl){ pl.style.transition = 'transform 1.05s cubic-bezier(.16,1,.3,1) .35s'; pl.style.transform = 'translateY(-101%)'; setTimeout(function(){ pl.style.display = 'none'; }, 1500); }
+    window.__aetherReady = true;
+    document.dispatchEvent(new CustomEvent('aether-ready'));
+  }
+  window.addEventListener('error', function(e){
+    var d = document.createElement('div');
+    d.style.cssText = 'position:fixed;bottom:8px;left:8px;z-index:9999;color:#f66;background:#000;font:11px monospace;padding:4px 8px;max-width:90vw';
+    d.textContent = 'ERR: ' + (e.message || e.type);
+    document.body.appendChild(d);
+  });
+})();
+</script>
 <script type="importmap">
 {"imports":{
   "three":"https://unpkg.com/three@0.153.0/build/three.module.js",
@@ -398,32 +427,22 @@ document.querySelectorAll('[data-magnet]').forEach(el=>{
   el.addEventListener('pointerleave', ()=>el.style.transform = '');
 });
 
-/* ============ preloader + reveals ============ */
-let count = 0;
-const plCount = document.querySelector('.pl-count');
-const plInt = setInterval(()=>{
-  count += 1+Math.floor(Math.random()*7);
-  if(count>=100){ count=100; clearInterval(plInt); finish(); }
-  plCount.textContent = count;
-  gsap.to('.pl-line i', {scaleX:count/100, duration:0.3, ease:'none'});
-}, 70);
-let started = false;
-function finish(){
-  if(started) return; started = true;
-  gsap.to('.pl-name, .pl-sub', {y:-26, opacity:0, duration:0.6, ease:'power2.in'});
-  gsap.to('.pl-count, .pl-line', {opacity:0, duration:0.4});
-  gsap.to('#preloader', {yPercent:-100, duration:1.05, delay:0.35, ease:'power4.inOut'})
-    .eventCallback('onComplete', ()=>{ document.getElementById('preloader').style.display='none'; });
-  // revelar foto hero con cortina + particulas apareciendo
-  gsap.to('.hero-photo img', {clipPath:'inset(0 0 0% 0)', duration:1.6, delay:0.5, ease:'power4.inOut'});
-  gsap.to(pMat, {opacity:0.12, duration:1.4, delay:1.0});
-  document.querySelector('#hero h1').classList.add('in');
-  gsap.to('#hero .label, #hero .sub, #hero .ctas, #hero .scroll-hint', {opacity:1, y:0, duration:0.9, delay:1.6, stagger:0.12, ease:'power3.out'});
-}
+/* ============ reveals (al terminar el preloader) ============ */
 document.querySelector('#hero .label').style.opacity=0;
 document.querySelector('#hero .sub').style.opacity=0;
 document.querySelector('#hero .ctas').style.opacity=0;
 document.querySelector('#hero .scroll-hint').style.opacity=0;
+
+let started = false;
+function onReady(){
+  if(started) return; started = true;
+  // revelar foto hero con cortina + particulas apareciendo
+  gsap.to('.hero-photo img', {clipPath:'inset(0 0 0% 0)', duration:1.6, ease:'power4.inOut'});
+  gsap.to(pMat, {opacity:0.12, duration:1.4, delay:0.6});
+  document.querySelector('#hero h1').classList.add('in');
+  gsap.to('#hero .label, #hero .sub, #hero .ctas, #hero .scroll-hint', {opacity:1, y:0, duration:0.9, delay:1.2, stagger:0.12, ease:'power3.out'});
+}
+if(window.__aetherReady) onReady(); else document.addEventListener('aether-ready', onReady, {once:true});
 
 /* reveals por seccion */
 function splitWords(el){
