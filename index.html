@@ -14,17 +14,17 @@
     --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
   html,body{background:var(--bg);color:var(--cream);overflow-x:hidden}
   body{font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased}
   ::selection{background:var(--gold);color:#0a0810}
+  img{display:block;max-width:100%}
 
   #scene{position:fixed;inset:0;z-index:0;display:block}
-  #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(0,0,0,.55) 100%)}
+  #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.6) 100%)}
   #noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  /* ---------- preloader ---------- */
+  /* preloader */
   #preloader{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2.2rem}
   #preloader .pl-name{font-family:var(--serif);font-size:clamp(3rem,9vw,6.5rem);letter-spacing:.28em;text-indent:.28em;color:var(--cream);font-weight:300}
   #preloader .pl-sub{font-size:.68rem;letter-spacing:.5em;text-indent:.5em;color:var(--dim);text-transform:uppercase}
@@ -32,14 +32,14 @@
   #preloader .pl-line{position:absolute;bottom:3.1rem;left:2.6rem;width:120px;height:1px;background:rgba(212,175,55,.35);overflow:hidden}
   #preloader .pl-line i{display:block;width:100%;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:left}
 
-  /* ---------- cursor ---------- */
+  /* cursor */
   #cur-dot,#cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99;border-radius:50%;transform:translate(-50%,-50%)}
   #cur-dot{width:5px;height:5px;background:var(--gold-hi)}
   #cur-ring{width:34px;height:34px;border:1px solid rgba(212,175,55,.55);transition:width .25s,height .25s,border-color .25s}
   #cur-ring.on{width:56px;height:56px;border-color:rgba(212,175,55,.9)}
   @media (pointer:coarse){#cur-dot,#cur-ring{display:none}}
 
-  /* ---------- layout ---------- */
+  /* layout */
   main{position:relative;z-index:3}
   section{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(1.4rem,6vw,6rem)}
   .label{font-size:.64rem;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem}
@@ -50,10 +50,14 @@
   .in .word>span{transform:translateY(0)}
 
   /* hero */
-  #hero{pointer-events:none}
-  #hero h1{font-size:clamp(4.6rem,15vw,12.5rem);letter-spacing:.06em;color:var(--cream)}
+  #hero{pointer-events:none;overflow:hidden}
+  .hero-photo{position:absolute;inset:0;z-index:-1}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:70% 50%;filter:contrast(1.05) saturate(1.05);clip-path:inset(0 0 100% 0)}
+  .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,6,10,.94) 12%,rgba(7,6,10,.55) 42%,rgba(7,6,10,.12) 68%),linear-gradient(to top,rgba(7,6,10,.9) 0%,transparent 30%)}
+  #hero .inner{position:relative;max-width:44rem}
+  #hero h1{font-size:clamp(4.6rem,14vw,11.5rem);letter-spacing:.06em;color:var(--cream)}
   #hero h1 .gold{background:linear-gradient(120deg,#8a6d1f,var(--gold-hi) 45%,#8a6d1f 80%);-webkit-background-clip:text;background-clip:text;color:transparent}
-  #hero .sub{max-width:34ch;font-size:clamp(.95rem,1.4vw,1.15rem);color:var(--dim);margin-top:1.6rem;line-height:1.75;font-weight:300}
+  #hero .sub{max-width:34ch;font-size:clamp(.95rem,1.4vw,1.15rem);color:var(--dim);margin-top:1.6rem;line-height:1.75}
   #hero .sub em{color:var(--cream);font-style:italic;font-family:var(--serif);font-size:1.05em}
   #hero .ctas{margin-top:2.6rem;display:flex;gap:1.2rem;flex-wrap:wrap;pointer-events:auto}
   .btn{position:relative;display:inline-block;padding:.95rem 2.1rem;border:1px solid rgba(212,175,55,.5);color:var(--cream);text-decoration:none;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;overflow:hidden;transition:color .4s,border-color .4s;background:transparent;cursor:pointer;font-family:var(--sans)}
@@ -63,15 +67,17 @@
   .btn:hover::before{transform:translateY(0)}
   .btn.solid{background:var(--gold);color:#0a0810;border-color:var(--gold)}
   .btn.solid::before{background:#fff6dd}
-  #hero .scroll-hint{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.8rem;font-size:.6rem;letter-spacing:.45em;color:var(--dim);text-transform:uppercase;pointer-events:none}
+  #hero .scroll-hint{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.8rem;font-size:.6rem;letter-spacing:.45em;color:var(--dim);text-transform:uppercase}
   #hero .scroll-hint .line{width:1px;height:54px;background:linear-gradient(to bottom,transparent,var(--gold));animation:drip 2.2s cubic-bezier(.65,0,.35,1) infinite}
   @keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
   /* collection */
-  #collection{pointer-events:none}
-  #collection .head{max-width:56rem;margin-bottom:clamp(2.5rem,8vh,5rem)}
+  #collection{pointer-events:none;overflow:hidden}
+  #collection .head{max-width:56rem;margin-bottom:clamp(2rem,7vh,4rem)}
   #collection h2{font-size:clamp(2.6rem,6vw,5rem);margin-top:.4rem}
   #collection h2 em{font-style:italic;color:var(--gold)}
+  .cols{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(2rem,6vw,5.5rem);align-items:center}
+  @media (max-width:960px){.cols{grid-template-columns:1fr}}
   .panel{pointer-events:auto;position:relative;max-width:30rem;background:rgba(10,8,16,.55);backdrop-filter:blur(14px);border:1px solid rgba(212,175,55,.16);padding:clamp(1.6rem,3vw,2.6rem)}
   .panel::before{content:"";position:absolute;top:-1px;left:-1px;width:34px;height:34px;border-top:1px solid var(--gold);border-left:1px solid var(--gold)}
   .panel .frag-name{font-family:var(--serif);font-size:clamp(1.9rem,3.4vw,2.7rem);font-style:italic;font-weight:400}
@@ -79,7 +85,15 @@
   .panel .frag-notes b{color:var(--cream);font-weight:400}
   .panel .frag-price{margin-top:1.2rem;font-size:.78rem;letter-spacing:.28em;color:var(--gold)}
   .panel .btn{margin-top:1.8rem}
-  .swatches{pointer-events:auto;display:flex;gap:1.1rem;flex-wrap:wrap;align-items:center}
+  .stage{pointer-events:none;position:relative;width:min(72vh,520px);aspect-ratio:7/9;margin:0 auto}
+  .stage::before,.stage::after{content:"";position:absolute;width:44px;height:44px;border:1px solid var(--gold);z-index:3;pointer-events:none}
+  .stage::before{top:-10px;left:-10px;border-right:none;border-bottom:none}
+  .stage::after{bottom:-10px;right:-10px;border-left:none;border-top:none}
+  .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);filter:contrast(1.04) saturate(1.06)}
+  .stage img.active{opacity:1;transform:scale(1)}
+  .stage .glass{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,transparent 55%,rgba(7,6,10,.42) 100%)}
+  .stage .glow{position:absolute;inset:-14%;pointer-events:none;opacity:.55;mix-blend-mode:screen;background:radial-gradient(circle at 50% 52%,var(--fg,transparent),transparent 62%);transition:opacity .6s}
+  .swatches{pointer-events:auto;display:flex;gap:1.1rem;flex-wrap:wrap;align-items:center;margin-top:2.2rem}
   .swatch{display:flex;flex-direction:column;align-items:center;gap:.55rem;cursor:pointer;background:none;border:none;color:var(--dim);font-family:var(--sans);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;transition:color .3s}
   .swatch .dot{width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.25);transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s;position:relative}
   .swatch:hover .dot,.swatch.active .dot{transform:scale(1.18);box-shadow:0 0 22px var(--dotglow)}
@@ -88,7 +102,7 @@
   .swatch .sw-name{transition:color .3s}
 
   /* craft */
-  #craft{pointer-events:none;min-height:120vh}
+  #craft{pointer-events:none;min-height:110vh}
   #craft .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,6vw,6rem);align-items:center}
   @media (max-width:900px){#craft .grid{grid-template-columns:1fr}}
   #craft h2{font-size:clamp(2.6rem,6vw,4.6rem)}
@@ -98,7 +112,10 @@
   .stats{margin-top:3rem;display:flex;gap:clamp(1.6rem,4vw,3.4rem);flex-wrap:wrap}
   .stat .num{font-family:var(--serif);font-size:clamp(2.4rem,4.5vw,3.6rem);color:var(--gold);font-style:italic;line-height:1}
   .stat .cap{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);margin-top:.7rem}
-  .craft-visual{position:relative;height:52vh;min-height:320px}
+  .craft-art{position:relative;height:54vh;min-height:320px}
+  .craft-art .ring{position:absolute;inset:12%;border:1px solid rgba(212,175,55,.22);border-radius:50%}
+  .craft-art .ring:nth-child(2){inset:26%;border-color:rgba(212,175,55,.14)}
+  .craft-art .core{position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.14),transparent 70%)}
 
   /* manifesto */
   #manifesto{min-height:90vh;text-align:center;align-items:center;pointer-events:none}
@@ -134,14 +151,17 @@
 
 <main>
   <section id="hero">
-    <div class="label">Maison de Parfum — Paris</div>
-    <h1><span class="word"><span>AETHER</span></span></h1>
-    <p class="sub"><em>Fragrances forged in glass and shadow.</em> Worn by those who arrive before they are announced.</p>
-    <div class="ctas">
-      <a class="btn" href="#collection" data-magnet><span>Explore the collection</span></a>
-      <a class="btn" href="#craft" data-magnet><span>Our craft</span></a>
+    <div class="hero-photo"><img src="assets/hero.jpg" alt="AETHER — Noir Absolu" fetchpriority="high"></div>
+    <div class="inner">
+      <div class="label">Maison de Parfum — Paris</div>
+      <h1><span class="word"><span>AETHER</span></span></h1>
+      <p class="sub"><em>Fragrances forged in glass and shadow.</em> Worn by those who arrive before they are announced.</p>
+      <div class="ctas">
+        <a class="btn" href="#collection" data-magnet><span>Explore the collection</span></a>
+        <a class="btn" href="#craft" data-magnet><span>Our craft</span></a>
+      </div>
+      <div class="scroll-hint"><span>Scroll</span><div class="line"></div></div>
     </div>
-    <div class="scroll-hint"><span>Scroll</span><div class="line"></div></div>
   </section>
 
   <section id="collection">
@@ -149,25 +169,28 @@
       <div class="label">The Collection</div>
       <h2>Four elements.<br><em>One signature.</em></h2>
     </div>
-    <div class="panel" id="frag-panel">
-      <div class="frag-name" id="frag-name">Noir Absolu</div>
-      <div class="frag-notes" id="frag-notes"><b>Oud noir</b> · smoked cedar · <b>leather</b></div>
-      <div class="frag-price" id="frag-price">340 € — 100 ml · Extrait de Parfum</div>
-      <button class="btn solid" data-magnet><span>Réserver la fragrance</span></button>
-    </div>
-    <div class="swatches" id="swatches">
-      <button class="swatch active" data-i="0" style="--dotc:#1d1135;--dotglow:rgba(110,80,190,.8)">
-        <span class="dot"></span><span class="sw-name">Noir</span>
-      </button>
-      <button class="swatch" data-i="1" style="--dotc:#b33a2a;--dotglow:rgba(220,90,60,.8)">
-        <span class="dot"></span><span class="sw-name">Rouge</span>
-      </button>
-      <button class="swatch" data-i="2" style="--dotc:#14532d;--dotglow:rgba(60,170,110,.8)">
-        <span class="dot"></span><span class="sw-name">Émeraude</span>
-      </button>
-      <button class="swatch" data-i="3" style="--dotc:#0e4f78;--dotglow:rgba(70,140,220,.8)">
-        <span class="dot"></span><span class="sw-name">Azur</span>
-      </button>
+    <div class="cols">
+      <div>
+        <div class="panel" id="frag-panel">
+          <div class="frag-name" id="frag-name">Noir Absolu</div>
+          <div class="frag-notes" id="frag-notes"><b>Oud noir</b> · smoked cedar · <b>leather</b></div>
+          <div class="frag-price" id="frag-price">340 € — 100 ml · Extrait de Parfum</div>
+          <button class="btn solid" data-magnet><span>Réserver la fragrance</span></button>
+        </div>
+        <div class="swatches" id="swatches">
+          <button class="swatch active" data-i="0" style="--dotc:#1d1135;--dotglow:rgba(110,80,190,.8)"><span class="dot"></span><span class="sw-name">Noir</span></button>
+          <button class="swatch" data-i="1" style="--dotc:#b33a2a;--dotglow:rgba(220,90,60,.8)"><span class="dot"></span><span class="sw-name">Rouge</span></button>
+          <button class="swatch" data-i="2" style="--dotc:#14532d;--dotglow:rgba(60,170,110,.8)"><span class="dot"></span><span class="sw-name">Émeraude</span></button>
+          <button class="swatch" data-i="3" style="--dotc:#0e4f78;--dotglow:rgba(70,140,220,.8)"><span class="dot"></span><span class="sw-name">Azur</span></button>
+        </div>
+      </div>
+      <div class="stage" id="stage">
+        <img src="assets/noir.jpg" alt="Noir Absolu" class="active" data-img="0" loading="lazy">
+        <img src="assets/rouge.jpg" alt="Ambre Rouge" data-img="1" loading="lazy">
+        <img src="assets/emeraude.jpg" alt="Émeraude" data-img="2" loading="lazy">
+        <img src="assets/azur.jpg" alt="Azur" data-img="3" loading="lazy">
+        <div class="glass"></div><div class="glow" id="stage-glow"></div>
+      </div>
     </div>
   </section>
 
@@ -184,7 +207,9 @@
           <div class="stat"><div class="num">100%</div><div class="cap">Hand-poured in Paris</div></div>
         </div>
       </div>
-      <div class="craft-visual"><span class="fade" style="display:block;height:100%"></span></div>
+      <div class="craft-art"><span class="fade" style="display:block;height:100%"></span>
+        <div class="ring"></div><div class="ring"></div><div class="core"></div>
+      </div>
     </div>
   </section>
 
@@ -218,196 +243,99 @@ import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
-/* ============ data ============ */
+/* ============ datos ============ */
 const FRAGS = [
-  {name:'Noir Absolu', color:0x1d1135, glow:'#1d1135', notes:'<b>Oud noir</b> · smoked cedar · <b>leather</b>', price:'340 € — 100 ml · Extrait de Parfum'},
-  {name:'Ambre Rouge', color:0xb33a2a, glow:'#b33a2a', notes:'<b>Amber</b> · saffron · <b>blood orange</b>', price:'320 € — 100 ml · Extrait de Parfum'},
-  {name:'Émeraude',    color:0x14532d, glow:'#14532d', notes:'<b>Vetiver</b> · moss · <b>green mandarin</b>', price:'320 € — 100 ml · Extrait de Parfum'},
-  {name:'Azur',        color:0x0e4f78, glow:'#0e4f78', notes:'<b>Sea salt</b> · driftwood · <b>bergamot</b>', price:'360 € — 100 ml · Extrait de Parfum'}
+  {name:'Noir Absolu',  notes:'<b>Oud noir</b> · smoked cedar · <b>leather</b>',          price:'340 € — 100 ml · Extrait de Parfum', glow:'#5b3a8a'},
+  {name:'Ambre Rouge',  notes:'<b>Amber</b> · saffron · <b>blood orange</b>',            price:'320 € — 100 ml · Extrait de Parfum', glow:'#b33a2a'},
+  {name:'Émeraude',     notes:'<b>Vetiver</b> · moss · <b>green mandarin</b>',           price:'320 € — 100 ml · Extrait de Parfum', glow:'#1f7a4d'},
+  {name:'Azur',         notes:'<b>Sea salt</b> · driftwood · <b>bergamot</b>',           price:'360 € — 100 ml · Extrait de Parfum', glow:'#1a5fa8'}
 ];
 
-/* ============ renderer ============ */
+/* ============ renderer (solo particulas: nítido, sin luces que quemen) ============ */
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
-renderer.toneMapping = THREE.NoToneMapping; // OutputPass hace tone mapping (ACES+composer = negro)
-renderer.shadowMap.enabled = false;
+renderer.toneMapping = THREE.NoToneMapping;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 0.1, 40);
-camera.position.set(0, 0.1, 7.2);
-camera.lookAt(0, -0.1, 0);
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 40);
+camera.position.set(0, 0, 6.4);
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.85, 0.55, 0.7));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.55, 0.5, 0.78));
 composer.addPass(new OutputPass());
 
-/* ============ lights ============ */
-const key = new THREE.DirectionalLight(0xfff2d8, 2.4); key.position.set(4, 5, 6); scene.add(key);
-const fill = new THREE.DirectionalLight(0x8899ff, 0.55); fill.position.set(-5, 2, 4); scene.add(fill);
-const rim = new THREE.DirectionalLight(0xd4af37, 2.6); rim.position.set(-4, 2.5, -3.5); scene.add(rim);
-const amb = new THREE.AmbientLight(0xffffff, 0.22); scene.add(amb);
-
-/* ============ bottle ============ */
-const bottle = new THREE.Group();
-const glassMat = new THREE.MeshPhysicalMaterial({
-  color:0xffffff, metalness:0, roughness:0.05, transmission:1, thickness:0.55, ior:1.5,
-  clearcoat:1, clearcoatRoughness:0.06, envMapIntensity:1.7,
-  attenuationColor:new THREE.Color(0xd4af37), attenuationDistance:0.5
-});
-const liquidMat = new THREE.MeshPhysicalMaterial({
-  color:FRAGS[0].color, roughness:0.12, metalness:0, transmission:0.92, thickness:0.4,
-  clearcoat:1, ior:1.45, envMapIntensity:1.3
-});
-const goldMat = new THREE.MeshStandardMaterial({color:0xd4af37, metalness:1, roughness:0.22, envMapIntensity:1.6});
-
-const bodyGeo = new RoundedBoxGeometry(1.15, 1.8, 0.62, 6, 0.16);
-const body = new THREE.Mesh(bodyGeo, glassMat);
-const liqGeo = new RoundedBoxGeometry(0.9, 1.3, 0.46, 5, 0.1);
-const liq = new THREE.Mesh(liqGeo, liquidMat); liq.position.y = -0.16;
-const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.24, 0.42, 32), glassMat); neck.position.y = 1.06;
-const collar = new THREE.Mesh(new THREE.TorusGeometry(0.235, 0.045, 16, 40), goldMat); collar.position.y = 0.94; collar.rotation.x = Math.PI/2;
-const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.3, 0.62, 40), goldMat); cap.position.y = 1.5;
-const capTop = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.27, 0.1, 40), goldMat); capTop.position.y = 1.86;
-const shoulder = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.022, 12, 60), goldMat); shoulder.position.y = 0.16; shoulder.rotation.x = Math.PI/2; shoulder.scale.set(1.25, 1, 0.7);
-
-bottle.add(body, liq, neck, collar, cap, capTop, shoulder);
-
-/* label con canvas */
-function makeLabel(text, sub){
-  const c = document.createElement('canvas'); c.width = 512; c.height = 340;
-  const g = c.getContext('2d');
-  g.fillStyle = '#0b0a10'; g.fillRect(0,0,512,340);
-  g.strokeStyle = 'rgba(212,175,55,.55)'; g.lineWidth = 1.5;
-  g.strokeRect(18,18,476,304);
-  g.fillStyle = '#f0d98c'; g.textAlign = 'center';
-  g.font = '300 74px Georgia, serif'; g.fillText('AETHER', 256, 148);
-  g.fillStyle = 'rgba(236,228,212,.75)'; g.font = '300 21px "Helvetica Neue", Arial, sans-serif'; g.letterSpacing = '6px';
-  g.fillText('MAISON DE PARFUM — PARIS', 256, 196);
-  g.strokeStyle = 'rgba(212,175,55,.7)'; g.beginPath(); g.moveTo(180, 228); g.lineTo(332, 228); g.stroke();
-  g.fillStyle = 'rgba(212,175,55,.95)'; g.font = 'italic 400 34px Georgia, serif';
-  g.fillText(text.toUpperCase(), 256, 272);
-  g.fillStyle = 'rgba(138,129,112,.85)'; g.font = '300 17px Arial'; g.letterSpacing = '4px';
-  g.fillText('EAU DE PARFUM · 100 ML', 256, 308);
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
-  return tex;
-}
-let labelTex = makeLabel('Noir Absolu', '');
-const label = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 0.57), new THREE.MeshStandardMaterial({map:labelTex, roughness:0.55, metalness:0, transparent:true}));
-label.position.set(0, -0.02, 0.32);
-bottle.add(label);
-
-bottle.position.set(1.5, -0.35, 0);
-bottle.scale.setScalar(1);
-scene.add(bottle);
-
-/* pool de luz bajo el frasco */
-const pool = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 4.2), new THREE.MeshBasicMaterial({
-  color:0xd4af37, transparent:true, opacity:0.10, blending:THREE.AdditiveBlending, depthWrite:false
-}));
-pool.rotation.x = -Math.PI/2; pool.position.y = -1.75;
-scene.add(pool);
-
-/* ============ particles ============ */
-const PCOUNT = 2400;
+/* ============ partículas de oro ============ */
+const PCOUNT = 1300;
 const pGeo = new THREE.BufferGeometry();
 const pPos = new Float32Array(PCOUNT*3);
-const pTgt = new Float32Array(PCOUNT*3);
+const pBase = new Float32Array(PCOUNT*3);
 const pSeed = new Float32Array(PCOUNT);
-const tmp = new THREE.Vector3();
 for(let i=0;i<PCOUNT;i++){
   pSeed[i] = Math.random()*Math.PI*2;
-  tmp.set(Math.random()*2-1, Math.random()*2-1, Math.random()*2-1).normalize().multiplyScalar(2.6+Math.random()*1.8);
-  pPos[i*3]=tmp.x; pPos[i*3+1]=tmp.y; pPos[i*3+2]=tmp.z;
+  const r = 1.2 + Math.random()*2.6;
+  const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
+  pBase[i*3]   = r*Math.sin(ph)*Math.cos(th);
+  pBase[i*3+1] = r*Math.sin(ph)*Math.sin(th)*0.85;
+  pBase[i*3+2] = r*Math.cos(ph)*0.6;
+  pPos[i*3]   = pBase[i*3]; pPos[i*3+1] = pBase[i*3+1]; pPos[i*3+2] = pBase[i*3+2];
 }
 pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
 const pMat = new THREE.PointsMaterial({
-  color:0xd4af37, size:0.02, transparent:true, opacity:0, blending:THREE.AdditiveBlending,
-  depthWrite:false, sizeAttenuation:true
+  color:0xd4af37, size:0.022, transparent:true, opacity:0,
+  blending:THREE.AdditiveBlending, depthWrite:false, sizeAttenuation:true
 });
 const points = new THREE.Points(pGeo, pMat);
-points.position.set(0, -0.35, 0);
 scene.add(points);
 
-/* lattice objetivo (forma del frasco) */
-(function buildLattice(){
-  let n = 0;
-  for(let x=-0.52; x<=0.52; x+=0.062){
-    for(let y=-0.9; y<=0.9; y+=0.062){
-      for(let z=-0.27; z<=0.27; z+=0.062){
-        // esquivar esquinas redondeadas
-        if(Math.abs(x)>0.42 && Math.abs(z)>0.2) continue;
-        pTgt[n*3]=x; pTgt[n*3+1]=y; pTgt[n*3+2]=z; n++;
-      }
-    }
-  }
-  // cuello + tapa
-  for(let i=n;i<PCOUNT;i++){
-    const a = pSeed[i]*7, r = 0.18+Math.random()*0.1;
-    pTgt[i*3]=Math.cos(a)*r; pTgt[i*3+1]=0.98+Math.random()*0.9; pTgt[i*3+2]=Math.sin(a)*r;
-  }
-})();
-const LATENT = 0, BOTTLE = 1, SWIRL = 2;
-let pMode = LATENT;
-function setMode(m){
-  pMode = m;
-  if(m===BOTTLE){ for(let i=0;i<PCOUNT;i++){ pTgt[i*3]= (pTgt[i*3]*.97 + (Math.random()-.5)*.05); } }
-  if(m===SWIRL){ for(let i=0;i<PCOUNT;i++){ pTgt[i*3]=Math.sin(pSeed[i])*2.1; pTgt[i*3+1]=Math.cos(pSeed[i]*1.7)*(0.6+Math.random()); pTgt[i*3+2]=Math.cos(pSeed[i])*1.4; } }
-}
+/* ============ estados partículas ============ */
+const DRIFT=0, SURGE=1;
+let pMode = DRIFT;
+const state = {swirl:0};
+function setMode(m){ pMode = m; }
 
-/* ============ estado scroll ============ */
-const state = {bx:1.5, by:-0.35, rot:0, scale:1, pRot:0};
-const tl = gsap.timeline({scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:1}});
-tl.to(state, {bx:0.0,  rot:Math.PI*0.7, by:-0.15, scale:1.18, duration:1}, 0.12)
-  .to(state, {bx:0.0,  rot:Math.PI*2.4, by:0.45,  scale:0.92, duration:1}, 0.5)
-  .to(state, {bx:-1.9, rot:Math.PI*3.1, by:0.9,   scale:0.6,  duration:1}, 0.8)
-  .to(state, {pRot:Math.PI*2, duration:3}, 0);
-
-/* disolución en craft */
-let dissolved = false;
+/* ============ scroll: parallax foto hero + surgimiento en craft ============ */
+gsap.to('.hero-photo img', {
+  yPercent:14, scale:1.12, ease:'none',
+  scrollTrigger:{trigger:'#hero', start:'top top', end:'bottom top', scrub:1}
+});
+gsap.to('#hero .inner', {
+  yPercent:-24, opacity:0.25, ease:'none',
+  scrollTrigger:{trigger:'#hero', start:'top top', end:'bottom top', scrub:1}
+});
+let surged = false;
 ScrollTrigger.create({
-  trigger:'#craft', start:'top 55%',
-  onEnter(){ if(!dissolved){ dissolved = true;
-    gsap.to(bottle.scale, {x:0.001, y:0.001, z:0.001, duration:0.9, ease:'power2.in'});
-    gsap.to(pMat, {opacity:0.92, duration:0.9});
-    setMode(SWIRL);
-  }},
-  onLeaveBack(){ if(dissolved){ dissolved = false;
-    gsap.to(bottle.scale, {x:state.scale, y:state.scale, z:state.scale, duration:0.9, ease:'power2.out'});
-    gsap.to(pMat, {opacity:0, duration:0.7});
-    setMode(LATENT);
-  }}
+  trigger:'#craft', start:'top 60%',
+  onEnter(){ if(!surged){ surged = true; gsap.to(pMat, {opacity:0.85, duration:1.2}); gsap.to(state, {swirl:1, duration:1.4}); } },
+  onLeaveBack(){ if(surged){ surged = false; gsap.to(pMat, {opacity:0.12, duration:1}); gsap.to(state, {swirl:0, duration:1.4}); } }
 });
 
 /* ============ fragancias ============ */
 const swatches = [...document.querySelectorAll('.swatch')];
+const stageImgs = [...document.querySelectorAll('.stage img')];
 const fragName = document.getElementById('frag-name');
 const fragNotes = document.getElementById('frag-notes');
 const fragPrice = document.getElementById('frag-price');
+const stage = document.getElementById('stage');
+const stageGlow = document.getElementById('stage-glow');
 let curFrag = 0;
 function selectFrag(i){
   if(i===curFrag) return; curFrag = i;
   swatches.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+  stageImgs.forEach((im,idx)=>im.classList.toggle('active', idx===i));
   const f = FRAGS[i];
-  gsap.to(liquidMat.color, {r:(f.color>>16&255)/255, g:(f.color>>8&255)/255, b:(f.color&255)/255, duration:0.8});
+  stageGlow.style.setProperty('--fg', f.glow);
+  gsap.fromTo(stageGlow, {opacity:0.15}, {opacity:0.55, duration:0.8, ease:'power2.out'});
   gsap.fromTo(fragName, {opacity:0, y:14}, {opacity:1, y:0, duration:0.5, ease:'power2.out'});
   gsap.fromTo(fragNotes, {opacity:0, y:10}, {opacity:1, y:0, duration:0.5, delay:0.08, ease:'power2.out'});
   gsap.fromTo(fragPrice, {opacity:0, y:10}, {opacity:1, y:0, duration:0.5, delay:0.16, ease:'power2.out'});
+  gsap.fromTo(stage, {scale:1.025}, {scale:1, duration:0.7, ease:'power2.out'});
   fragName.textContent = f.name;
   fragNotes.innerHTML = f.notes;
   fragPrice.textContent = f.price;
-  // redibujar etiqueta
-  label.material.map = makeLabel(f.name, '');
-  label.material.map.needsUpdate = true;
 }
 swatches.forEach((s,i)=>s.addEventListener('click', ()=>selectFrag(i)));
 const qp = new URLSearchParams(location.search).get('frag');
@@ -418,27 +346,23 @@ const clock = new THREE.Clock();
 function animate(){
   requestAnimationFrame(animate);
   const t = clock.getElapsedTime();
-  // lerp posicion/rotacion del estado scroll
-  bottle.position.x += (state.bx - bottle.position.x)*0.05;
-  bottle.position.y += (state.by - bottle.position.y)*0.05;
-  bottle.rotation.y += (state.rot - bottle.rotation.y)*0.05;
-  // idle life
-  bottle.rotation.y += Math.sin(t*0.5)*0.004;
-  bottle.position.y += Math.sin(t*0.9)*0.012;
-  // particulas
   const arr = pGeo.attributes.position.array;
+  const sw = state.swirl;
   for(let i=0;i<PCOUNT;i++){
-    const x = pTgt[i*3], y = pTgt[i*3+1], z = pTgt[i*3+2];
-    arr[i*3]   += (x - arr[i*3])*0.035;
-    arr[i*3+1] += (y - arr[i*3+1])*0.035;
-    arr[i*3+2] += (z - arr[i*3+2])*0.035;
-    if(pMode===SWIRL){
-      arr[i*3]   += Math.sin(t*0.7+pSeed[i])*0.0018;
-      arr[i*3+1] += Math.cos(t*0.6+pSeed[i]*2)*0.0018;
-    }
+    const s = pSeed[i];
+    // deriva orgánica + swirl al llegar a craft
+    const swirlX = Math.cos(t*0.5 + s)*1.1*sw;
+    const swirlY = Math.sin(t*0.45 + s*1.7)*0.9*sw;
+    const tx = pBase[i*3]   + swirlX;
+    const ty = pBase[i*3+1] + swirlY;
+    const tz = pBase[i*3+2] + Math.sin(t*0.3 + s*2.3)*0.35;
+    arr[i*3]   += (tx - arr[i*3])*0.03;
+    arr[i*3+1] += (ty - arr[i*3+1])*0.03;
+    arr[i*3+2] += (tz - arr[i*3+2])*0.03;
+    if(!sw){ arr[i*3+1] += Math.sin(t*0.7+s)*0.0007; }
   }
   pGeo.attributes.position.needsUpdate = true;
-  points.rotation.y = t*0.04 + state.pRot*0.3;
+  points.rotation.y = t*0.02;
   composer.render();
 }
 animate();
@@ -488,14 +412,11 @@ function finish(){
   gsap.to('.pl-count, .pl-line', {opacity:0, duration:0.4});
   gsap.to('#preloader', {yPercent:-100, duration:1.05, delay:0.35, ease:'power4.inOut'})
     .eventCallback('onComplete', ()=>{ document.getElementById('preloader').style.display='none'; });
-  // ensamblaje del frasco
-  gsap.to(pMat, {opacity:0.85, duration:1.2, delay:0.7});
-  gsap.to({v:0}, {v:1, duration:2.4, delay:0.7, onUpdate:function(){ if(this.targets()[0].v>0.02) setMode(BOTTLE); }});
-  gsap.to(pMat, {opacity:0, duration:1.0, delay:2.6});
-  gsap.fromTo(bottle.scale, {x:0.001, y:0.001, z:0.001}, {x:1, y:1, z:1, duration:1.4, delay:2.4, ease:'elastic.out(1,0.65)'});
-  // reveal hero
+  // revelar foto hero con cortina + particulas apareciendo
+  gsap.to('.hero-photo img', {clipPath:'inset(0 0 0% 0)', duration:1.6, delay:0.5, ease:'power4.inOut'});
+  gsap.to(pMat, {opacity:0.12, duration:1.4, delay:1.0});
   document.querySelector('#hero h1').classList.add('in');
-  gsap.to('#hero .label, #hero .sub, #hero .ctas, #hero .scroll-hint', {opacity:1, y:0, duration:0.9, delay:3.3, stagger:0.12, ease:'power3.out'});
+  gsap.to('#hero .label, #hero .sub, #hero .ctas, #hero .scroll-hint', {opacity:1, y:0, duration:0.9, delay:1.6, stagger:0.12, ease:'power3.out'});
 }
 document.querySelector('#hero .label').style.opacity=0;
 document.querySelector('#hero .sub').style.opacity=0;
