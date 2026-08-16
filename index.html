@@ -115,10 +115,13 @@
   .stats{margin-top:3rem;display:flex;gap:clamp(1.6rem,4vw,3.4rem);flex-wrap:wrap}
   .stat .num{font-family:var(--serif);font-size:clamp(2.4rem,4.5vw,3.6rem);color:var(--gold);font-style:italic;line-height:1}
   .stat .cap{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);margin-top:.7rem}
-  .craft-art{position:relative;height:54vh;min-height:320px}
-  .craft-art .ring{position:absolute;inset:12%;border:1px solid rgba(212,175,55,.22);border-radius:50%}
-  .craft-art .ring:nth-child(2){inset:26%;border-color:rgba(212,175,55,.14)}
-  .craft-art .core{position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.14),transparent 70%)}
+  .craft-art{position:relative;height:54vh;min-height:320px;display:flex;align-items:center;justify-content:center}
+  .craft-art .craft-img{position:absolute;width:min(44vh,380px);aspect-ratio:1;border-radius:50%;object-fit:cover;border:1px solid rgba(212,175,55,.35);box-shadow:0 0 70px rgba(212,175,55,.18),0 0 140px rgba(212,175,55,.08)}
+  .craft-art .ring{position:absolute;border:1px solid rgba(212,175,55,.22);border-radius:50%;animation:spin 46s linear infinite}
+  .craft-art .ring.r1{inset:6%}
+  .craft-art .ring.r2{inset:17%;animation-direction:reverse;animation-duration:30s;border-color:rgba(212,175,55,.14)}
+  .craft-art .core{position:absolute;inset:27%;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.12),transparent 70%)}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   /* manifesto */
   #manifesto{min-height:90vh;text-align:center;align-items:center;pointer-events:none}
@@ -210,8 +213,9 @@
           <div class="stat"><div class="num">100%</div><div class="cap">Hand-poured in Paris</div></div>
         </div>
       </div>
-      <div class="craft-art"><span class="fade" style="display:block;height:100%"></span>
-        <div class="ring"></div><div class="ring"></div><div class="core"></div>
+      <div class="craft-art">
+        <img class="craft-img" src="assets/craft.jpg" alt="The maceration — amber in motion">
+        <div class="ring r1"></div><div class="ring r2"></div><div class="core"></div>
       </div>
     </div>
   </section>
