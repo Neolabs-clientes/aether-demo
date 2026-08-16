@@ -340,6 +340,8 @@ function selectFrag(i){
 swatches.forEach((s,i)=>s.addEventListener('click', ()=>selectFrag(i)));
 const qp = new URLSearchParams(location.search).get('frag');
 if(qp!==null && FRAGS[qp]) selectFrag(+qp);
+const qs = new URLSearchParams(location.search).get('sec');
+if(qs){ setTimeout(()=>{ const el = document.getElementById(qs); if(el) el.scrollIntoView({behavior:'instant'}); }, 4200); }
 
 /* ============ loop ============ */
 const clock = new THREE.Clock();
