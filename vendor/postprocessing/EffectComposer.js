@@ -3,7 +3,7 @@ import {
 	HalfFloatType,
 	Vector2,
 	WebGLRenderTarget
-} from 'three';
+} from '../three.module.js';
 import { CopyShader } from '../shaders/CopyShader.js';
 import { ShaderPass } from './ShaderPass.js';
 import { MaskPass } from './MaskPass.js';
